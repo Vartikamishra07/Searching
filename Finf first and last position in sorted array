@@ -1,0 +1,113 @@
+1.Naive solution
+
+class Solution 
+{
+public:
+    vector<int> searchRange(vector<int>& nums, int target) 
+    {
+        int count=0;
+        int j=0;
+        vector<int> res;
+        for(int i=0;i<nums.size();i++)
+        {
+            if(nums[i]==target)
+            {
+                if(count==0)
+                {
+                    j=i;
+                }
+                count++;
+            }
+        }
+        res.push_back(j);
+        res.push_back(j+(count-1));
+        if(count==0)
+        {
+            res[0]=-1;
+            res[1]=-1;
+        }
+        return res;
+    }
+};
+
+2. Using binary search
+
+class Solution 
+{
+public:
+    vector<int> searchRange(vector<int>& nums, int target) 
+    {
+        vector<int> result(2, -1);
+        
+        // Helper function to find the leftmost index
+        int leftIndex = findLeftmostIndex(nums, target);
+        if (leftIndex == -1) {
+            return result;
+        }
+        
+        // Helper function to find the rightmost index
+        int rightIndex = findRightmostIndex(nums, target);
+        
+        result[0] = leftIndex;
+        result[1] = rightIndex;
+        
+        return result;
+    }
+    
+private:
+    int findLeftmostIndex(const vector<int>& nums, int target) 
+    {
+        int left = 0;
+        int right = nums.size() - 1;
+        int result = -1;
+        
+        while (left <= right) 
+        {
+            int mid = left + (right - left) / 2;
+            
+            if (nums[mid] == target) 
+            {
+                result = mid; // Potential leftmost index found
+                right = mid - 1; // Look further left
+            } 
+            else if (nums[mid] < target) 
+            {
+                left = mid + 1;
+            } 
+            else 
+            {
+                right = mid - 1;
+            }
+        }
+        
+        return result;
+    }
+    
+    int findRightmostIndex(const vector<int>& nums, int target) 
+    {
+        int left = 0;
+        int right = nums.size() - 1;
+        int result = -1;
+        
+        while (left <= right) 
+        {
+            int mid = left + (right - left) / 2;
+            
+            if (nums[mid] == target) 
+            {
+                result = mid; // Potential rightmost index found
+                left = mid + 1; // Look further right
+            } 
+            else if (nums[mid] < target) 
+            {
+                left = mid + 1;
+            } 
+            else 
+            {
+                right = mid - 1;
+            }
+        }
+        
+        return result;
+    }
+};
