@@ -1,3 +1,4 @@
+1.Normal method
 #include <vector>
 #include <algorithm>
 using namespace std;
@@ -17,5 +18,36 @@ public:
             divisor++;
         }
         return -1;
+    }
+};
+
+2. Using binary search
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+    int smallestDivisor(vector<int>& nums, int threshold) 
+    {
+        int low=1;
+        sort(nums.begin() , nums.end());
+        int high=nums[nums.size()-1]; //biggest element of nums
+        while(low<=high)
+        {
+           int mid=(low+high)/2;
+           if(f(nums,mid,threshold)) high=mid-1;
+           else low=mid+1;
+        }
+        return low;
+    }
+    bool f(vector<int>&nums , int divisor , int threshold)
+    {
+        int sum=0;
+        for(int n:nums)
+        {
+           sum+=(n+divisor-1)/divisor;
+        }
+        return sum<=threshold;
     }
 };
