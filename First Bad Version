@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int firstBadVersion(int n) {
+        int left = 1;
+        int right = n;
+        
+        while (left < right) {
+            int mid = left + (right - left) / 2; // To avoid potential overflow
+            if (isBadVersion(mid)) {
+                right = mid; // The first bad version is in the left half including mid
+            } else {
+                left = mid + 1; // The first bad version is in the right half excluding mid
+            }
+        }
+        
+        return left; // left and right should converge to the first bad version
+    }
+};
